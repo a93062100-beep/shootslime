@@ -1,0 +1,182 @@
+[gd_scene load_steps=18 format=3 uid="uid://bo4opnevbgyhh"]
+
+[ext_resource type="Texture2D" uid="uid://cimupo7ok4vut" path="res://Top down shooter assets/Characters/NormalCharacter.png" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://d1th3kfljrrs4" path="res://Player.cs" id="1_onrkg"]
+[ext_resource type="PackedScene" uid="uid://bl1ywj4x5n6vh" path="res://gun.tscn" id="3_hqtel"]
+[ext_resource type="Texture2D" uid="uid://dvw54alphjs67" path="res://Top down shooter assets/Characters/Hands.png" id="4_sweqy"]
+[ext_resource type="Script" uid="uid://n7cjbnnys0h" path="res://HealthBar.cs" id="7_b26j0"]
+[ext_resource type="AudioStream" uid="uid://sdrrjwajgtv4" path="res://Top down shooter assets/Sound Effects/player hurt sound.mp3" id="7_dw050"]
+[ext_resource type="AudioStream" uid="uid://bu4x2mgs8ym12" path="res://Top down shooter assets/Sound Effects/shooting sound.wav" id="8_b26j0"]
+[ext_resource type="Script" uid="uid://d3uiyjgelluox" path="res://MagicBar.cs" id="8_n7ghd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
+radius = 10.049875
+
+[sub_resource type="Animation" id="Animation_i3pqv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_onrkg"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hqtel"]
+resource_name = "running"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sweqy"]
+_data = {
+&"RESET": SubResource("Animation_i3pqv"),
+&"idle": SubResource("Animation_onrkg"),
+&"running": SubResource("Animation_hqtel")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hs0m"]
+bg_color = Color(0.41960785, 0.25882354, 0.25882354, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxqw"]
+bg_color = Color(0.95686275, 0.3019608, 0.3019608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dw050"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.0857164, 0.25669956, 0.42492497, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b26j0"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.105882354, 0.65882355, 0.98039216, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_onrkg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -1)
+shape = SubResource("CircleShape2D_onrkg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." groups=["player"]]
+libraries = {
+&"": SubResource("AnimationLibrary_sweqy")
+}
+
+[node name="Hand" type="Node2D" parent="."]
+
+[node name="WeaponSocket" type="Node2D" parent="Hand"]
+
+[node name="Gun" parent="Hand/WeaponSocket" instance=ExtResource("3_hqtel")]
+position = Vector2(2, -1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Hand"]
+position = Vector2(7.7127643, 1.5984807)
+rotation = 1.5707964
+scale = Vector2(0.7937808, 0.7944558)
+texture = ExtResource("4_sweqy")
+flip_h = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, 0)
+texture = ExtResource("1_4flbx")
+hframes = 6
+vframes = 3
+frame = 6
+
+[node name="playerHurtSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_dw050")
+
+[node name="shootingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_b26j0")
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="HealthBar" type="ProgressBar" parent="GUI"]
+offset_left = 351.0
+offset_top = 4.0
+offset_right = 598.0
+offset_bottom = 44.0
+theme_override_styles/background = SubResource("StyleBoxFlat_2hs0m")
+theme_override_styles/fill = SubResource("StyleBoxFlat_1jxqw")
+value = 50.0
+script = ExtResource("7_b26j0")
+metadata/_edit_use_anchors_ = true
+
+[node name="MagicBar" type="ProgressBar" parent="GUI"]
+anchors_preset = -1
+anchor_left = 0.068333335
+anchor_top = 0.00375
+anchor_right = 0.44833332
+anchor_bottom = 0.00375
+offset_left = 327.0
+offset_top = 47.0
+offset_right = 331.0
+offset_bottom = 74.0
+theme_override_styles/background = SubResource("StyleBoxFlat_dw050")
+theme_override_styles/fill = SubResource("StyleBoxFlat_b26j0")
+value = 40.0
+show_percentage = false
+script = ExtResource("8_n7ghd")
+metadata/_edit_use_anchors_ = true

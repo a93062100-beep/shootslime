@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://l1gpyvi8uxw2"]
+
+[ext_resource type="Script" uid="uid://bd3kotgh1f1sm" path="res://EnemyBullet.cs" id="1_gl7bs"]
+[ext_resource type="Texture2D" uid="uid://cc0d57bbblnx6" path="res://Top down shooter assets/Bullet/01.png" id="2_gl7bs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgs6v"]
+size = Vector2(16, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gl7bs"]
+size = Vector2(16, 8.5)
+
+[node name="enemyBullet" type="Area2D"]
+rotation = 1.5707964
+script = ExtResource("1_gl7bs")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_gl7bs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_sgs6v")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_gl7bs")
+
+[connection signal="area_entered" from="Area2D" to="." method="OnAreaEnter"]
+[connection signal="area_exited" from="Area2D" to="." method="OnAreaExit"]
+[connection signal="body_entered" from="Area2D" to="." method="OnBodyEnter"]
+[connection signal="body_exited" from="Area2D" to="." method="OnBodyExit"]

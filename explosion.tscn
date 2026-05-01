@@ -1,0 +1,90 @@
+[gd_scene load_steps=10 format=3 uid="uid://ni2w2sdg2lic"]
+
+[ext_resource type="Script" uid="uid://bytv4jegcs8cb" path="res://Explosion.cs" id="1_vxas0"]
+[ext_resource type="Texture2D" uid="uid://cmhog435alql1" path="res://Top down shooter assets/Slime/Individual Sprites/slime-Sheet.png" id="2_j4sxf"]
+[ext_resource type="Texture2D" uid="uid://b5bvxmlvtog3l" path="res://Top down shooter assets/Bullet/11.png" id="3_m5xho"]
+[ext_resource type="Texture2D" uid="uid://cc0d57bbblnx6" path="res://Top down shooter assets/Bullet/01.png" id="4_kmxf7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vxas0"]
+size = Vector2(18.166668, 9.333333)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j4sxf"]
+size = Vector2(27, 13.5)
+
+[sub_resource type="Animation" id="Animation_m5xho"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0009999999),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(1, 2), Vector2i(7, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_kmxf7"]
+resource_name = "explosion"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l04k4"]
+_data = {
+&"RESET": SubResource("Animation_m5xho"),
+&"explosion": SubResource("Animation_kmxf7")
+}
+
+[node name="explosion" type="Area2D"]
+script = ExtResource("1_vxas0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_j4sxf")
+hframes = 8
+vframes = 3
+frame = 17
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.375, 6)
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_vxas0")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, 6.75)
+shape = SubResource("RectangleShape2D_j4sxf")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+rotation = 4.712389
+scale = Vector2(0.11423273, 0.11024079)
+texture = ExtResource("3_m5xho")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_l04k4")
+}
+speed_scale = 1.974
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(0, 12)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_kmxf7")
+
+[connection signal="body_entered" from="Area2D" to="." method="OnBodyEnter"]
+[connection signal="body_exited" from="Area2D" to="." method="OnBodyExit"]
